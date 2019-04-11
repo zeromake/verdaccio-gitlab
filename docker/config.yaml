@@ -1,0 +1,67 @@
+#
+# This is the config file used for the docker images.
+# It allows all users to do anything, so don't use it on production systems.
+#
+# Do not configure host and port under `listen` in this file
+# as it will be ignored when using docker.
+# see https://verdaccio.org/docs/en/docker#docker-and-custom-port-configuration
+#
+# Look here for more config file examples:
+# https://github.com/verdaccio/verdaccio/tree/master/conf
+#
+storage: /verdaccio/storage/data
+plugins: /verdaccio/plugins
+
+web:
+  title: gaoding-verdaccio
+
+auth:
+  gitlab:
+    url: https://gitlab.com
+    authCache:
+      enabled: true
+      ttl: 300
+    publish: $developer
+  # htpasswd:
+  #   file: /verdaccio/storage/htpasswd
+
+security:
+  api:
+    jwt:
+      sign:
+        expiresIn: 60d
+        notBefore: 1
+  web:
+    sign:
+      expiresIn: 7d
+      notBefore: 1
+
+# a list of other known repositories we can talk to
+uplinks:
+  npmjs:
+    url: https://registry.npm.taobao.org
+
+packages:
+  '@*/*':
+    # scoped packages
+    access: $reporter
+    publish: $authenticated
+    unpublish: $authenticated
+    proxy: npmjs
+    gitlab: true
+
+  '**':
+    access: $reporter
+    publish: $authenticated
+    unpublish: $authenticated
+    proxy: npmjs
+    gitlab: true
+
+middlewares:
+  audit:
+    enabled: true
+
+# log settings
+logs:
+  - { type: stdout, format: pretty, level: http }
+
