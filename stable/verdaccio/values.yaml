@@ -63,11 +63,11 @@ configMap: |
   web:
     # WebUI is enabled as default, if you want disable it, just uncomment this line
     #enable: false
-    title: gaoding-verdaccio
+    title: Verdaccio
 
   auth:
     gitlab:
-      url: https://git.huanleguang.com
+      url: https://gitlab.com
       authCache:
         enabled: true
         ttl: 300
